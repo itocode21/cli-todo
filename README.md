@@ -1,2 +1,2 @@
 # cli-todo
- simple todo in go
+ cli todo в го без сторонних библиотек
