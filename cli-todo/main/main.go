@@ -74,11 +74,24 @@ func listTasks(status string) {
 	}
 }
 
+func listTasksdone(status string) {
+	for _, task := range tasks {
+		if status == "Done" {
+			fmt.Printf("%d: %s - %s\n", task.ID, task.Text, task.Status)
+		}
+	}
+}
 func main() {
 	loadTasks()
 
 	command := os.Args[1]
 	switch command {
+	case "list-done":
+		status := ""
+		if len(os.Args) > 2 {
+			status = os.Args[2]
+		}
+		listTasks(status)
 	case "update":
 		id, _ := strconv.Atoi(os.Args[2])
 		newText := os.Args[3]
