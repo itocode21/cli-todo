@@ -79,10 +79,10 @@ func main() {
 
 	command := os.Args[1]
 	switch command {
-    	case "update":
-        	id, _ := strconv.Atoi(os.Args[2])
-        	newText := os.Args[3]
-       		updateTask(id, newText)
+	case "update":
+		id, _ := strconv.Atoi(os.Args[2])
+		newText := os.Args[3]
+		updateTask(id, newText)
 	case "add":
 		text := os.Args[2]
 		addTask(text)
@@ -101,7 +101,6 @@ func main() {
 	case "cancel":
 		id, _ := strconv.Atoi(os.Args[2])
 		updateTaskStatus(id, "Cancel")
-
 	default:
 		fmt.Println("Invalid command")
 	}
