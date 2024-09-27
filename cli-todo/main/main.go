@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 )
 
 type Task struct {
-	ID     int    `json:"id"`
-	Text   string `json:"text"`
-	Status string `json:"status"`
+	ID        int       `json:"id"`
+	Text      string    `json:"text"`
+	Status    string    `json:"status"`
+	CreatedAt time.Time `json:"created_time"`
+	UpdatedAt time.Time `json:"update_time"`
 }
 
 var tasks []Task
@@ -23,22 +26,29 @@ func loadTasks() {
 	json.Unmarshal(file, &tasks)
 }
 
+// сохраняем таски и изменения в них
 func saveTasks() {
 	file, _ := json.MarshalIndent(tasks, "", "    ")
 	_ = os.WriteFile("tasks.json", file, 0644)
 }
 
+// Добавление тасков
 func addTask(text string) {
-	task := Task{ID: len(tasks) + 1, Text: text, Status: "Pending"}
+	task := Task{
+		ID:   len(tasks) + 1,
+		Text: text, Status: "Pending",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now()}
 	tasks = append(tasks, task)
 	saveTasks()
 }
 
-// апдейт работает не корректно, надо поймать и передать введенный текст
+// апдейт уже сохраненных тасков 
 func updateTask(id int, newText string) {
 	for i, task := range tasks {
 		if task.ID == id {
 			tasks[i].Text = newText
+			tasks[i].UpdatedAt = time.Now()
 			saveTasks()
 			return
 		}
@@ -69,25 +79,21 @@ func deleteTask(id int) {
 func listTasks(status string) {
 	for _, task := range tasks {
 		if status == "" || task.Status == status {
-			fmt.Printf("%d: %s - %s\n", task.ID, task.Text, task.Status)
+			fmt.Printf("[%d] %s -> %s | Created at: %s\n || Updated at: %s\n",
+				task.ID, task.Text, task.Status,
+				task.CreatedAt.Format("[date:2006-01-02] [time:15:04:05]"),
+				task.UpdatedAt.Format("[date:2006-01-02] [time:15:04:05]"))
 		}
 	}
 }
 
-func listTasksdone(status string) {
-	for _, task := range tasks {
-		if status == "Done" {
-			fmt.Printf("%d: %s - %s\n", task.ID, task.Text, task.Status)
-		}
-	}
-}
 func main() {
 	loadTasks()
 
 	command := os.Args[1]
 	switch command {
 	case "list-done":
-		status := ""
+		status := "done"
 		if len(os.Args) > 2 {
 			status = os.Args[2]
 		}
