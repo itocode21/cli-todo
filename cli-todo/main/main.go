@@ -81,8 +81,8 @@ func listTasks(status string) {
 		if status == "" || task.Status == status {
 			fmt.Printf("[%d] %s -> %s | Created at: %s\n || Updated at: %s\n",
 				task.ID, task.Text, task.Status,
-				task.CreatedAt.Format("[date:2006-01-02] [time:15:04:05]"),
-				task.UpdatedAt.Format("[date:2006-01-02] [time:15:04:05]"))
+				task.CreatedAt.Format("[date:2024-09-27] [time:15:04:05]"),
+				task.UpdatedAt.Format("[date:2024-09-27] [time:15:04:05]"))
 		}
 	}
 }
