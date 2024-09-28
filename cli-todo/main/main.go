@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+// ---------------------------------------------
+// task struct
 type Task struct {
 	ID        int       `json:"id"`
 	Text      string    `json:"text"`
@@ -18,6 +20,8 @@ type Task struct {
 
 var tasks []Task
 
+// ---------------------------------------------
+// read json file
 func loadTasks() {
 	file, err := os.ReadFile("tasks.json")
 	if err != nil {
@@ -26,13 +30,15 @@ func loadTasks() {
 	json.Unmarshal(file, &tasks)
 }
 
-// сохраняем таски и изменения в них
+// ---------------------------------------------
+// write task in file
 func saveTasks() {
 	file, _ := json.MarshalIndent(tasks, "", "    ")
 	_ = os.WriteFile("tasks.json", file, 0644)
 }
 
-// Добавление тасков
+// ---------------------------------------------
+// add new task || add "u task" || set default status "Pending"
 func addTask(text string) {
 	task := Task{
 		ID:   len(tasks) + 1,
@@ -43,7 +49,8 @@ func addTask(text string) {
 	saveTasks()
 }
 
-// апдейт уже сохраненных тасков
+// ---------------------------------------------
+// update task write new texr in created task || update [task index] "new"
 func updateTask(id int, newText string) {
 	for i, task := range tasks {
 		if task.ID == id {
@@ -56,16 +63,8 @@ func updateTask(id int, newText string) {
 
 }
 
-func updateTaskStatus(id int, newStatus string) {
-	for i, task := range tasks {
-		if task.ID == id {
-			tasks[i].Status = newStatus
-			saveTasks()
-			return
-		}
-	}
-}
-
+// ---------------------------------------------
+// delete task || delete [task index]
 func deleteTask(id int) {
 	for i, task := range tasks {
 		if task.ID == id {
@@ -76,6 +75,20 @@ func deleteTask(id int) {
 	}
 }
 
+// ---------------------------------------------
+// update task status || done\cancel\pending [task id]
+func updateTaskStatus(id int, newStatus string) {
+	for i, task := range tasks {
+		if task.ID == id {
+			tasks[i].Status = newStatus
+			saveTasks()
+			return
+		}
+	}
+}
+
+// ---------------------------------------------
+// list all task || list
 func listTasks(status string) {
 	for _, task := range tasks {
 		if status == "" || task.Status == status {
@@ -87,6 +100,8 @@ func listTasks(status string) {
 	}
 }
 
+// ---------------------------------------------
+// list all task with status "done"|| list-done
 func listDone() {
 	for _, task := range tasks {
 		if task.Status == "Done" {
@@ -98,9 +113,11 @@ func listDone() {
 	}
 }
 
-func listCancel() {
+// ---------------------------------------------
+// list all task with status "pending"|| list-pending
+func listPending() {
 	for _, task := range tasks {
-		if task.Status == "Cancel" {
+		if task.Status == "Pending" {
 			fmt.Printf("[%d] %s --> Status:%s\n | Created at: %s\n | Updated at: %s\n",
 				task.ID, task.Text, task.Status,
 				task.CreatedAt.Format("[date:2006-01-02] [time:15:04:05]"),
@@ -109,9 +126,11 @@ func listCancel() {
 	}
 }
 
-func listPending() {
+// ---------------------------------------------
+// list all task with status "cancel"|| list-cancel
+func listCancel() {
 	for _, task := range tasks {
-		if task.Status == "Pending" {
+		if task.Status == "Cancel" {
 			fmt.Printf("[%d] %s --> Status:%s\n | Created at: %s\n | Updated at: %s\n",
 				task.ID, task.Text, task.Status,
 				task.CreatedAt.Format("[date:2006-01-02] [time:15:04:05]"),
@@ -125,38 +144,46 @@ func main() {
 
 	command := os.Args[1]
 	switch command {
-
-	case "list-pending":
-		listPending()
-	case "list-cancel":
-		listCancel()
-	case "list-done":
-		listDone()
+	//add new task
+	case "add":
+		text := os.Args[2]
+		addTask(text)
+	//update created task
 	case "update":
 		id, _ := strconv.Atoi(os.Args[2])
 		newText := os.Args[3]
 		updateTask(id, newText)
-	case "add":
-		text := os.Args[2]
-		addTask(text)
+	//delete task
 	case "delete":
 		id, _ := strconv.Atoi(os.Args[2])
 		deleteTask(id)
+	//list all task
 	case "list":
 		status := ""
 		if len(os.Args) > 2 {
 			status = os.Args[2]
 		}
 		listTasks(status)
+	//set done status task
 	case "done":
 		id, _ := strconv.Atoi(os.Args[2])
 		updateTaskStatus(id, "Done")
-	case "cancel":
-		id, _ := strconv.Atoi(os.Args[2])
-		updateTaskStatus(id, "Cancel")
+	//set pending status task
 	case "pending":
 		id, _ := strconv.Atoi(os.Args[2])
 		updateTaskStatus(id, "Pending")
+	//set cancel status task
+	case "cancel":
+		id, _ := strconv.Atoi(os.Args[2])
+		updateTaskStatus(id, "Cancel")
+		//list only one status task
+	case "list-done":
+		listDone()
+	case "list-pending":
+		listPending()
+	case "list-cancel":
+		listCancel()
+
 	default:
 		fmt.Println("Invalid command")
 	}
