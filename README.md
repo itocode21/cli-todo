@@ -8,7 +8,7 @@ commands:
 main.exe add "u task"
 
 
-main.exe update n (n -- its task id)
+main.exe update n "new text" (n -- its task id)
 
 
 main.exe delete n (n -- its task id)
