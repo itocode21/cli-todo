@@ -38,11 +38,11 @@ func saveTasks() {
 }
 
 // ---------------------------------------------
-// add new task || add "u task" || set default status "Pending"
+// add new task || add "u task" || set default status "In progress"
 func addTask(text string) {
 	task := Task{
 		ID:   len(tasks) + 1,
-		Text: text, Status: "Pending",
+		Text: text, Status: "In progress",
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now()}
 	tasks = append(tasks, task)
@@ -114,7 +114,7 @@ func listDone() {
 }
 
 // ---------------------------------------------
-// list all task with status "pending"|| list-pending
+// list all task with status "inprogress"|| list-progress
 func listPending() {
 	for _, task := range tasks {
 		if task.Status == "Pending" {
@@ -141,7 +141,10 @@ func listCancel() {
 
 func main() {
 	loadTasks()
-
+	if len(os.Args) < 2 {
+		fmt.Println("No command provided")
+		return
+	}
 	command := os.Args[1]
 	switch command {
 	//add new task
