@@ -22,6 +22,7 @@ go build main.go
 ```
 -----------------------------
 
+## Run the following command to  run the project:
 ```bash
 # To add a task
 ./main add "u text here"
