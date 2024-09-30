@@ -1,11 +1,15 @@
 # Task Tracker
 
+My First solution for the  [task-tracker](https://roadmap.sh/projects/task-tracker) challenge from [roadmap.sh](https://roadmap.sh/).
+
+
 ## How to run
 
 Clone the repository, and use following command
 
 ```bash
 git clone https://github.com/itocode21/cli-todo.git
+cd cli-todo\main
 ```
 
 
