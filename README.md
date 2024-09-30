@@ -1,4 +1,12 @@
-https://roadmap.sh/projects/task-tracker
+# Task Tracker
+
+## How to run
+
+Clone the repository, and use following command
+
+```bash
+git clone https://github.com/itocode21/cli-todo.git
+```
 
 
 cli-tasl tracker 
