@@ -9,34 +9,34 @@ Clone the repository, and use following command
 
 ```bash
 git clone https://github.com/itocode21/cli-todo.git
-cd cli-todo\main
+cd main
 ```
 
 
-cli-tasl tracker 
-
-commands:
-
-main.exe add "u task"
 
 
-main.exe update n "new text" (n -- its task id)
+### Commands:
 
+```bash
+go build main.go
+```
+-----------------------------
 
-main.exe delete n (n -- its task id)
+```bash
+# To add a task
+./main add "u text here"
+# To update aa task
+./main update n "update u task here" #|n --> task id
+# To delete a task
+./main delete n #|n --> task id
+# To set any status| default status "Pending"
+./main done n #set status "done" for task| n --> task id
+./main pending n #set status "pending" for task | n --> task id
+./main cancel n #set status "status" for task | n --> task id
+# To list task
+./main list #list all task
+./main list-done #list all task with status "done"
+./main list-pending #list all task with status "pending"
+./main list-cancel #list all task with status "cancel"
 
-
-main.exe list (list all status task)
-
-main.exe list-done (list task with status done)
-
-main.exe list-pending (list task with status pending)
-
-main.exe list-cancel (list task with status cancel)
-
-main.exe done n (n--> task id; set status done task)
-
-main.exe pending n (n--> task id; set status pending task)
-
-main.exe cancel n (n--> taskid; set status cancel task)
-
+```
