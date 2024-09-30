@@ -15,7 +15,7 @@ cd main
 
 
 
-### Commands:
+### Run the following command to build:
 
 ```bash
 go build main.go
